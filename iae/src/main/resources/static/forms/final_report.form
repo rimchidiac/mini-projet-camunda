@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 2,
+  "components": [
+    {
+      "label": "Final report",
+      "type": "textfield",
+      "id": "Field_1ruihz3",
+      "key": "final_report",
+      "description": "write your final report here",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "action": "submit",
+      "label": "Submit report",
+      "type": "button",
+      "id": "Field_07exykz",
+      "key": "field_1a1dj2z"
+    }
+  ],
+  "type": "default",
+  "id": "final-report"
+}

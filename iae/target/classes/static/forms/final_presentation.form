@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 2,
+  "components": [
+    {
+      "label": "Final Presentation Date",
+      "type": "textfield",
+      "id": "Field_1498h7z",
+      "key": "presentation",
+      "description": "Please enter the date of the group's final presentation",
+      "validate": {
+        "required": true,
+        "regularExpressionPattern": "^(0[1-9]|[12][0-9]|3[01])[- /.]"
+      }
+    },
+    {
+      "action": "submit",
+      "label": "submit",
+      "type": "button",
+      "id": "Field_0m23k40",
+      "key": "field_1s9grcs"
+    }
+  ],
+  "type": "default",
+  "id": "final-presentation"
+}

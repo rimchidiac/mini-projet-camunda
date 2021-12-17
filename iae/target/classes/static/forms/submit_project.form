@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 2,
+  "components": [
+    {
+      "label": "Project Title",
+      "type": "textfield",
+      "id": "Field_0u21ypn",
+      "key": "title",
+      "description": "What is the title of your fyp project?",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Project Description",
+      "type": "textfield",
+      "id": "Field_07sozuu",
+      "key": "description",
+      "description": "Enter your project description",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Email Address",
+      "type": "textfield",
+      "id": "Field_1vcsrym",
+      "key": "email",
+      "description": "Enter your email address",
+      "validate": {
+        "required": true,
+        "regularExpressionPattern": " /^[a-zA-Z0-9.! #$%&'*+/=? ^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\. [a-zA-Z0-9-]+)*$/."
+      }
+    },
+    {
+      "action": "submit",
+      "label": "Submit Project",
+      "type": "button",
+      "id": "Field_0rpbwxc",
+      "key": "field_1c4hwkl"
+    }
+  ],
+  "type": "default",
+  "id": "submit-project"
+}

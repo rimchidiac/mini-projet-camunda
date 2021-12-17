@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 2,
+  "components": [
+    {
+      "label": "Progress Description",
+      "type": "textfield",
+      "id": "Field_1i2o6eu",
+      "key": "progress_description",
+      "description": "Enter the description of the work done untill now and what there is left to do",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "work hours per week",
+      "type": "number",
+      "id": "Field_10l6pjb",
+      "key": "work_hours",
+      "description": "Enter the number of work hours per week",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "work hours left",
+      "type": "number",
+      "id": "Field_0pzyvu4",
+      "key": "hours_left",
+      "description": "Enter the number of hours of work left to finish the project",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "action": "submit",
+      "label": "Submit progress",
+      "type": "button",
+      "id": "Field_1gmdc5v",
+      "key": "field_0enjh69"
+    }
+  ],
+  "type": "default",
+  "id": "progress-report"
+}

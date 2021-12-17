@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 2,
+  "components": [
+    {
+      "label": "Project Title",
+      "type": "textfield",
+      "id": "Field_0f1os9w",
+      "key": "title",
+      "description": "the title of the fyp project",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Project Description",
+      "type": "textfield",
+      "id": "Field_1xn9xji",
+      "key": "description",
+      "description": "Project Description of the fyp project",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "values": [
+        {
+          "value": "rejected",
+          "label": "Rejected"
+        },
+        {
+          "label": "Accepted",
+          "value": "accepted"
+        }
+      ],
+      "label": "response",
+      "type": "select",
+      "id": "Field_0j2x28w",
+      "key": "status",
+      "description": "is the project validated?",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "action": "submit",
+      "label": "Submit the response",
+      "type": "button",
+      "id": "Field_0j109ip",
+      "key": "field_0fhuf7p"
+    }
+  ],
+  "type": "default",
+  "id": "validate-project"
+}

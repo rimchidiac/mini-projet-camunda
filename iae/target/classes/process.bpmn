@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_0fr9mxs" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.11.1">
+  <bpmn:process id="fyp-process" name="fyp process" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="start fyp process">
+      <bpmn:outgoing>SequenceFlow_1fp17al</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1fp17al" sourceRef="StartEvent_1" targetRef="submit-project" />
+    <bpmn:userTask id="submit-project" name="Submit project" camunda:formKey="camunda-forms:/forms/submit_project.form" camunda:candidateUsers="demo">
+      <bpmn:incoming>SequenceFlow_1fp17al</bpmn:incoming>
+      <bpmn:outgoing>Flow_015ygg6</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_163k54u" name="end fyp process">
+      <bpmn:incoming>Flow_10x8elt</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_015ygg6" sourceRef="submit-project" targetRef="validate-project" />
+    <bpmn:sequenceFlow id="Flow_0o81tf4" sourceRef="validate-project" targetRef="validation" />
+    <bpmn:userTask id="validate-project" name="Validate project" camunda:formKey="camunda-forms:/forms/validate_project.form">
+      <bpmn:incoming>Flow_015ygg6</bpmn:incoming>
+      <bpmn:outgoing>Flow_0o81tf4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="validation">
+      <bpmn:incoming>Flow_0o81tf4</bpmn:incoming>
+      <bpmn:outgoing>rejected-project</bpmn:outgoing>
+      <bpmn:outgoing>accepted-project</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="rejected-project" name="rejected" sourceRef="validation" targetRef="rejection-email">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{status=='rejected'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_10k2wft" name="end fyp process">
+      <bpmn:incoming>Flow_0mp61pq</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0kyn02b" sourceRef="progress-report" targetRef="final-report" />
+    <bpmn:sequenceFlow id="accepted-project" name="accepted" sourceRef="validation" targetRef="validation-email">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{status!='rejected'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_10x8elt" sourceRef="rejection-email" targetRef="Event_163k54u" />
+    <bpmn:sequenceFlow id="Flow_14pwrzg" sourceRef="validation-email" targetRef="group-allocation" />
+    <bpmn:sequenceFlow id="Flow_01g6qm1" sourceRef="group-allocation" targetRef="progress-report" />
+    <bpmn:serviceTask id="validation-email" name="send validation email" camunda:delegateExpression="#{sendResponseEmail}">
+      <bpmn:incoming>accepted-project</bpmn:incoming>
+      <bpmn:outgoing>Flow_14pwrzg</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="rejection-email" name="send rejection email" camunda:delegateExpression="#{sendResponseEmail}">
+      <bpmn:incoming>rejected-project</bpmn:incoming>
+      <bpmn:outgoing>Flow_10x8elt</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0n9grcq" sourceRef="final-report" targetRef="final-presentation" />
+    <bpmn:sequenceFlow id="Flow_0mp61pq" sourceRef="final-presentation" targetRef="Event_10k2wft" />
+    <bpmn:userTask id="group-allocation" name="group allocation" camunda:formKey="camunda-forms:/forms/group_allocation.form">
+      <bpmn:incoming>Flow_14pwrzg</bpmn:incoming>
+      <bpmn:outgoing>Flow_01g6qm1</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="progress-report" name="progress report" camunda:formKey="camunda-forms:/forms/progress_report.form">
+      <bpmn:incoming>Flow_01g6qm1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0kyn02b</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="final-report" name="final report" camunda:formKey="camunda-forms:/forms/final_report.form">
+      <bpmn:incoming>Flow_0kyn02b</bpmn:incoming>
+      <bpmn:outgoing>Flow_0n9grcq</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="final-presentation" name="schedule final presentation" camunda:formKey="camunda-forms:/forms/final_presentation.form">
+      <bpmn:incoming>Flow_0n9grcq</bpmn:incoming>
+      <bpmn:outgoing>Flow_0mp61pq</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="fyp-process">
+      <bpmndi:BPMNEdge id="Flow_01g6qm1_di" bpmnElement="Flow_01g6qm1">
+        <di:waypoint x="890" y="140" />
+        <di:waypoint x="940" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14pwrzg_di" bpmnElement="Flow_14pwrzg">
+        <di:waypoint x="740" y="140" />
+        <di:waypoint x="790" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10x8elt_di" bpmnElement="Flow_10x8elt">
+        <di:waypoint x="740" y="440" />
+        <di:waypoint x="842" y="440" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05abzba_di" bpmnElement="accepted-project">
+        <di:waypoint x="580" y="265" />
+        <di:waypoint x="580" y="140" />
+        <di:waypoint x="640" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="557" y="103" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0kyn02b_di" bpmnElement="Flow_0kyn02b">
+        <di:waypoint x="1040" y="140" />
+        <di:waypoint x="1090" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1n41uuz_di" bpmnElement="rejected-project">
+        <di:waypoint x="580" y="315" />
+        <di:waypoint x="580" y="440" />
+        <di:waypoint x="640" y="440" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="530" y="393" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0o81tf4_di" bpmnElement="Flow_0o81tf4">
+        <di:waypoint x="510" y="290" />
+        <di:waypoint x="555" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_015ygg6_di" bpmnElement="Flow_015ygg6">
+        <di:waypoint x="370" y="290" />
+        <di:waypoint x="410" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1fp17al_di" bpmnElement="SequenceFlow_1fp17al">
+        <di:waypoint x="238" y="290" />
+        <di:waypoint x="270" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0n9grcq_di" bpmnElement="Flow_0n9grcq">
+        <di:waypoint x="1190" y="140" />
+        <di:waypoint x="1230" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mp61pq_di" bpmnElement="Flow_0mp61pq">
+        <di:waypoint x="1330" y="140" />
+        <di:waypoint x="1382" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="202" y="272" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="179" y="315" width="82" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_08mft2c_di" bpmnElement="submit-project">
+        <dc:Bounds x="270" y="250" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_163k54u_di" bpmnElement="Event_163k54u">
+        <dc:Bounds x="842" y="422" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="821" y="465" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0rv1c03_di" bpmnElement="validate-project">
+        <dc:Bounds x="410" y="250" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1guqvog_di" bpmnElement="validation" isMarkerVisible="true">
+        <dc:Bounds x="555" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1xbsjpw_di" bpmnElement="validation-email">
+        <dc:Bounds x="640" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0jdrjq2_di" bpmnElement="rejection-email">
+        <dc:Bounds x="640" y="400" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_10k2wft_di" bpmnElement="Event_10k2wft">
+        <dc:Bounds x="1382" y="122" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1360" y="165" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_03msb59_di" bpmnElement="group-allocation">
+        <dc:Bounds x="790" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_17qizxd_di" bpmnElement="progress-report">
+        <dc:Bounds x="940" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_045zzvx_di" bpmnElement="final-report">
+        <dc:Bounds x="1090" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bw2eu9_di" bpmnElement="final-presentation">
+        <dc:Bounds x="1230" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
